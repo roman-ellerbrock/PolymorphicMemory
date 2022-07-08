@@ -1,4 +1,5 @@
 #include "PolymorphicMemory.h"
+#include "PolymorphicMemory.cuh"
 #include "malloc.cuh"
 
 
@@ -10,6 +11,8 @@ int main() {
 	std::cout << "Memory: " << n << "\n";
 
 	cuMem();
+
+	polymorphic::memory<double, polymorphic::CUDA> cumem(n);
 
 	return 0;
 }
