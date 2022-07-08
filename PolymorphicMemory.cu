@@ -17,9 +17,14 @@ namespace polymorphic {
 	using cd = complex<double>;
 
 	template <> double *allocate<double, CUDA>(const size_t n) {
-		d* mem;
-		cudaMalloc(&mem, n * sizeof(d));
-		return mem;
+		d *data;
+		cudaMalloc(&data, n * sizeof(d));
+		return data;
+//		return blas::device_malloc<double>(n);
+	}
+
+	template <> void free<double, CUDA>(d* data) {
+		cudaFree(data);
 //		return blas::device_malloc<double>(n);
 	}
 
