@@ -7,9 +7,9 @@
 
 namespace polymorphic {
 
-	template
-	class memory<complex<double>, CPU>;
+//	template
+//	class memory<CPU<complex<double>>;
 
 	template
-	class memory<double, CPU>;
+	class memory<CPU<double>>;
 }

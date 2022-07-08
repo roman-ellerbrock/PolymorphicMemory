@@ -6,73 +6,68 @@
 #include <string.h>
 
 namespace polymorphic {
-	template<typename T, class D>
-	T *allocate(const size_t n) {
-		return (T *) malloc(n * sizeof(T));
+
+
+	template <class T>
+	T* CPU<T>::allocate(size_type size) {
+		return (T*) malloc(size * sizeof(T));
 	}
 
-	template<typename T, class D>
-	void copy(T *dest, const T *src, const size_t n) {
-		memcpy(dest, src, n * sizeof(T));
+	template <class T>
+	void CPU<T>::free() {
+		::free(data_);
 	}
 
-	template<typename T, class D>
-	void free(T *data) {
-		::free(data);
+	template <class T>
+	void CPU<T>::memcopy(const CPU& src) {
+		auto nCpy = (size() < src.size()) ? size() : src.size();
+		memcpy(data(), src.data(), nCpy * sizeof(T));
 	}
 
-	template<typename T, class D>
-	memory<T, D>::memory(size_t size)
-		: data_(allocate<T, D>(size)), size_(size) {
+
+	template<class D>
+	memory<D>::memory(size_t size) : dev_(size) {
 	}
 
-	template<typename T, class D>
-	memory<T, D>::~memory() {
-		free<T, D>(data());
-	}
-
-	template<typename T, class D>
-	memory<T, D>::memory(const memory& B)
+	template<class D>
+	memory<D>::memory(const memory& B)
 		: memory(B.size()) {
+		dev_.memcopy(B.dev_);
 	}
 
-	template<typename T, class D>
-	memory<T, D>::memory(memory&& B) noexcept
-		: data_(std::exchange(B.data_, nullptr)),
-		  size_(std::exchange(B.size_, 0)) {
+	template<class D>
+	memory<D>::memory(memory&& B) noexcept {
+		std::swap(dev_, B.dev_);
 	}
 
-	template<typename T, class D>
-	memory<T, D>& memory<T, D>::operator=(const memory<T, D>& B) {
+	template<class D>
+	memory<D>& memory<D>::operator=(const memory<D>& B) {
+		/// Only allocate new memory if needed and catch self-assignment
 		if (this == &B) {
 			return *this;
-		} else if (B.size_ == this->size_) {
-			copy<T, D>(data(), B.data(), size());
+		} else if (B.size() == this->size()) {
+			dev_.memcopy(B.dev_);
 		} else {
-			memory<T, D> tmp(B);
+			memory<D> tmp(B);
 			*this = move(tmp);
 		}
 		return *this;
 	}
 
-	template<typename T, class D>
-	memory<T, D>& memory<T, D>::operator=(memory<T, D>&& B) noexcept {
-		std::swap(data_, B.data_);
-		std::swap(size_, B.size_);
+	template<class D>
+	memory<D>& memory<D>::operator=(memory<D>&& B) noexcept {
+		std::swap(dev_, B.dev_);
 		return *this;
 	}
 
-	template<typename T, class D>
-	void memory<T, D>::resize(size_t newSize) {
+	template<class D>
+	void memory<D>::resize(size_t newSize) {
 		if (size() != newSize) {
-			T* newData = allocate<T, D>(newSize);
-			auto cpySize = (size() < newSize) ? size() : newSize;
-			copy<T, D>(newData, data(), cpySize);
-			free<T, D>(data_);
-
-			std::swap(newData, data_);
-			std::swap(newSize, size_);
+			D devB(newSize);
+			devB.memcopy(dev_);
+			std::swap(dev_, devB);
 		}
 	}
 
 }
+

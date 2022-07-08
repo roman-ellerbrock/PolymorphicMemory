@@ -8,49 +8,64 @@
 
 namespace polymorphic {
 
-	template<typename T, class D>
-	T *allocate(const size_t n);
-
-	template<typename T, class D>
-	void copy(T *dest, const T *src, const size_t n);
-
-	template<typename T, class D>
-	void free(T *data);
-
 	template<typename T, class deviceA, class deviceB>
 	void transfer(T *d_dest, const T* h_src, const size_t n, const size_t m);
 
 	template<typename T, class deviceA, class deviceB>
 	void transferFromDevice(T *d_dest, const T* h_src, const size_t n, const size_t m);
 
-	struct CPU;
-
-	template<typename T, class Queue = CPU>
-	class memory {
+	template <class T = complex<double>>
+	class CPU {
 		using size_type = size_t;
 	public:
-		explicit memory(size_t size);
-		~memory();
 
-		memory(memory&& B) noexcept;
+		void memcopy(const CPU& src);
+
+		CPU() = default;
+		CPU(size_type size) : data_(allocate(size)), size_(size) {
+		}
+
+		~CPU() {
+			free();
+		}
+
+		[[nodiscard]] const auto& size() const { return size_; }
+		auto& size() { return size_; }
+		[[nodiscard]] const T* data() const { return data_; }
+		T* data() { return data_; }
+
+	protected:
+		T* allocate(size_type size);
+		void free();
+
+		T* data_{nullptr};
+		size_type size_{0};
+	};
+
+	template<class Device = CPU<double>>
+	class memory {
+	public:
+		explicit memory(size_t size);
+		~memory() = default;
+
 		memory(const memory& B);
+		memory(memory&& B) noexcept;
 
 		memory& operator=(const memory& B);
 		memory& operator=(memory&& B) noexcept;
 
-		void resize(size_type);
+		void resize(size_t);
 
-		[[nodiscard]] size_type size() const { return size_; }
-		[[nodiscard]] size_type nBatches() const { return 1; }
-		[[nodiscard]] size_type batchSize() const { return size() / nBatches(); }
+		[[nodiscard]] auto size() const { return dev_.size(); }
 
-		T *data() { return data_; }
+//		const auto *data() const { return dev_.data(); }
+		auto* data() { return dev_.data(); }
 
-		const T *data() const { return data_; }
-
+//		auto size() const { return CPU::size(); }
+//		const auto *data() const { return CPU::data(); }
 	protected:
-		T *data_{nullptr};
-		size_t size_{0};
+		Device dev_;
+
 	};
 }
 

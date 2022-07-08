@@ -9,7 +9,7 @@ project(polymorphicmemory LANGUAGES C CXX CUDA)
 add_executable(memory
 	main.cpp
 	PolymorphicMemory.cpp
-	PolymorphicMemory.cu
+	#	PolymorphicMemory.cu
 	malloc.cu
 )
 

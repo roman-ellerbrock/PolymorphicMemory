@@ -18,6 +18,7 @@ namespace polymorphic {
 
 	template <> double *allocate<double, CUDA>(const size_t n) {
 		d *data;
+		CUDA::malloc();
 		cudaMalloc(&data, n * sizeof(d));
 		return data;
 //		return blas::device_malloc<double>(n);
@@ -30,6 +31,8 @@ namespace polymorphic {
 
 	template<>
 	void copy<d, CUDA>(d *dest, const d *src, const size_t n) {
+		CUDA::
+		cudaMemcpy(dest, src, n * sizeof(d), cudaMemcpyDeviceToDevice);
 //		blas::Queue queue( device, batch_size );
 //		blas::copy(n, src, 1, dest, 1, queue);
 	}
