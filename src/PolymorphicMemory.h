@@ -22,6 +22,7 @@ namespace polymorphic {
 		void memcopy(const CPU& src);
 
 		CPU() = default;
+
 		CPU(size_type size) : data_(allocate(size)), size_(size) {
 		}
 
@@ -31,6 +32,7 @@ namespace polymorphic {
 
 		[[nodiscard]] const auto& size() const { return size_; }
 		auto& size() { return size_; }
+
 		[[nodiscard]] const T* data() const { return data_; }
 		T* data() { return data_; }
 

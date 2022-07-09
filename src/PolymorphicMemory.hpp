@@ -49,6 +49,7 @@ namespace polymorphic {
 			dev_.memcopy(B.dev_);
 		} else {
 			memory<D> tmp(B);
+			cout << "yo\n" << endl;
 			*this = move(tmp);
 		}
 		return *this;

@@ -6,14 +6,14 @@ project(polymorphicmemory LANGUAGES C CXX CUDA)
 
 #include(FindBLASPP.cmake)
 
+add_subdirectory("src")
+
 add_executable(memory
-	main.cpp
-	PolymorphicMemory.cpp
-	#	PolymorphicMemory.cu
-	malloc.cu
+	src/main.cpp
 )
 
-target_link_libraries(memory ${CUDA_LIBRARIES} -lcublas -lcurand)
+target_link_libraries(memory polymorphicMemory ${CUDA_LIBRARIES} -lcublas -lcurand)
 #target_link_libraries(memory ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} ${CUDA_LIBRARIES} -lcublas -lcurand)
 
 #set_target_properties(memory PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+
