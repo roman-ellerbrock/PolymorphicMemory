@@ -3,14 +3,6 @@
 #include "malloc.cuh"
 #include <iostream>
 
-std::ostream& operator<<(std::ostream& os, polymorphic::memory<polymorphic::CPU<double>>& mem) {
-	os << "mem.size() = " << mem.size() << std::endl;
-	for (size_t i = 0; i < mem.size(); ++i) {
-		os << mem.data()[i] << " ";
-	}
-	return os;
-}
-
 polymorphic::memory<polymorphic::CPU<double>> generator() {
 	using namespace polymorphic;
 	memory<CPU<double>> mem(10);

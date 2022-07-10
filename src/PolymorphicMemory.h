@@ -27,7 +27,6 @@ namespace polymorphic {
 		}
 
 		~CPU() {
-			free();
 		}
 
 		[[nodiscard]] const auto& size() const { return size_; }
@@ -69,6 +68,9 @@ namespace polymorphic {
 		Device dev_;
 
 	};
+
+	std::ostream& operator<<(std::ostream& os, memory<CPU<double>>& mem);
+
 }
 
 

@@ -48,9 +48,18 @@ namespace polymorphic {
 		} else if (B.size() == this->size()) {
 			dev_.memcopy(B.dev_);
 		} else {
-			memory<D> tmp(B);
-			cout << "yo\n" << endl;
-			*this = move(tmp);
+			D devB(B.size());
+//			devB.memcopy(B.dev_);
+			cout << "dev_:" << dev_.data() << endl;
+			cout << "devB:" << devB.data() << endl;
+			std::swap(dev_, devB);
+			cout << "dev_:" << dev_.data() << endl;
+			cout << "devB:" << devB.data() << endl;
+			getchar();
+			
+//			memory<D> tmp(B);
+//			std::swap(B, tmp);
+			//*this = move(tmp);
 		}
 		return *this;
 	}

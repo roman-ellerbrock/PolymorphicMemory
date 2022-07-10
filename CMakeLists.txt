@@ -17,3 +17,5 @@ target_link_libraries(memory polymorphicMemory ${CUDA_LIBRARIES} -lcublas -lcura
 
 #set_target_properties(memory PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
+
+add_subdirectory("tests")
