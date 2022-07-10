@@ -2,7 +2,7 @@
 // Created by Roman Ellerbrock on 6/30/22.
 //
 
-#include "PolymorphicMemory.h"
+#include "Memory.h"
 #include <string.h>
 
 namespace polymorphic {

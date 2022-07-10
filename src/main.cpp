@@ -1,20 +1,13 @@
-#include "PolymorphicMemory.h"
+#include "hostMemory.h"
 //#include "PolymorphicMemory.cuh"
 #include "malloc.cuh"
 #include <iostream>
-
-polymorphic::memory<polymorphic::CPU<double>> generator() {
-	using namespace polymorphic;
-	memory<CPU<double>> mem(10);
-	mem.data()[0] = 1.;
-	return mem;
-}
 
 int main() {
 
 	size_t n = 20;
 	using namespace polymorphic;
-	memory<CPU<double>> mem(n);
+/*	memory<CPU<double>> mem(n);
 
 	std::cout << "Memory: " << n << "\n";
 	std::cout << mem << std::endl;
@@ -40,6 +33,7 @@ int main() {
 	D = C;
 	std::cout << "D:" << D << std::endl;
 
+	*/
 	return 0;
 }
 

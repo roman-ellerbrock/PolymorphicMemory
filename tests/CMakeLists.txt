@@ -15,8 +15,8 @@ enable_testing()
 
 add_executable(
 	memory_test
-	memory_test.cpp
-	cpu_test.cpp
+#	memory_test.cpp
+	cuda_test.cpp
 )
 
 target_include_directories(
@@ -29,6 +29,7 @@ target_link_libraries(
 	memory_test
 	gtest_main
 	polymorphicMemory
+	${CUDA_LIBRARIES} -lcublas -lcurand
 )
 
 
