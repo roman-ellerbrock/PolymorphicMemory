@@ -1,0 +1,3 @@
+[submodule "external/blaspp"]
+	path = external/blaspp
+	url = https://bitbucket.org/icl/blaspp.git

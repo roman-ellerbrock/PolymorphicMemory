@@ -15,3 +15,5 @@ namespace polymorphic {
 	template class cuMemory<double>;
 	template class cuMemory<complex<double>>;
 }
+
+

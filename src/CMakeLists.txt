@@ -10,3 +10,4 @@ add_library(polymorphicMemory SHARED
 #	PolymorphicMemory.cuh
 	malloc.cu
 )
+

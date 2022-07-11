@@ -48,7 +48,7 @@ namespace polymorphic {
 	protected:
 		T* data_{nullptr};
 		size_t size_{0};
-		// queue
+//		blas::Queue queue_;
 	};
 
 	using cuMemoryd = cuMemory<double>;

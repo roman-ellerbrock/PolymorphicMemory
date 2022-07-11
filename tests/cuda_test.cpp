@@ -67,6 +67,8 @@ TEST_F(cuMemoryF, assignResize) {
 	checkArange(rehost, 20);
 }
 
+/// Device - Device 
+
 TEST_F(cuMemoryF, cuconstructCopy) {
 	cuMemoryd dev(host_);
 	cuMemoryd dev2(dev);
