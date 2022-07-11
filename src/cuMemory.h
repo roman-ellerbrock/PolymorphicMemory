@@ -6,6 +6,7 @@
 #define POLYMORPHICMEMORY_CUH
 #include "stdafx.h"
 #include "hostMemory.h"
+#include <blas.hh>
 
 namespace polymorphic {
 
@@ -45,10 +46,13 @@ namespace polymorphic {
 		T* data() { return data_; }
 		const T* data()const { return data_; }
 
+		auto& queue() { return queue_; }
+		const auto& queue() const { return queue_; }
+
 	protected:
 		T* data_{nullptr};
 		size_t size_{0};
-//		blas::Queue queue_;
+		blas::Queue queue_;
 	};
 
 	using cuMemoryd = cuMemory<double>;

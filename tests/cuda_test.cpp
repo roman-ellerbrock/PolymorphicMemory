@@ -89,5 +89,51 @@ TEST_F(cuMemoryF, cuAssignResize) {
 	cuCheckArange(dev2, 20);
 }
 
+double residual(const memoryd& a, const memoryd& b) {
+	double r = 0.;
+	for (size_t i = 0; i < a.size(); ++i) {
+		r += abs(pow(a.data()[i] - b.data()[i], 2));
+	}
+	return sqrt(r);
+}
+
+TEST_F(cuMemoryF, dgemm) {
+	/// Create memory on host
+	size_t n = 10;
+	memoryd hostA = arange<double>(n * n);
+	memoryd hostB = hostA;
+	memoryd hostC(hostA.size());
+
+	/// transfer to GPU
+	cuMemoryd devA(hostA);
+	cuMemoryd devB(hostA);
+	cuMemoryd devC(hostA);
+
+	/// perform dgemm
+	int device = 0;
+	int batch_size = 1000;
+	using namespace blas;
+	Queue queue(device, batch_size);
+
+	gemm(Layout::ColMajor, Op::NoTrans, Op::NoTrans,
+		n, n, n, 
+		-1.0, devA.data(), n, 
+		devB.data(), n, 
+		0.0, devC.data(), n, 
+		queue);
+
+	memoryd hostC2 = devC;
+	queue.sync();
+
+	gemm(Layout::ColMajor, Op::NoTrans, Op::NoTrans,
+		n, n, n, 
+		-1.0, hostA.data(), n, 
+		hostB.data(), n, 
+		0.0, hostC.data(), n);
+
+	EXPECT_NEAR(residual(hostC, hostC2), 0., deps);
+}
+
+
 
 

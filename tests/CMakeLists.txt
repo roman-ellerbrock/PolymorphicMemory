@@ -29,6 +29,7 @@ target_link_libraries(
 	memory_test
 	gtest_main
 	polymorphicMemory
+	-lblaspp
 	${CUDA_LIBRARIES} -lcublas -lcurand
 )
 

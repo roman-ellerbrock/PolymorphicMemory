@@ -20,6 +20,11 @@ target_link_libraries(memory
 	${CUDA_LIBRARIES} -lcublas -lcurand
 )
 
+target_include_directories(memory
+	PUBLIC
+	${BLAS_DIRECTORIES}
+)
+
 #set_target_properties(memory PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 
 
