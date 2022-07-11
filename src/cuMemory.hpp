@@ -6,6 +6,33 @@
 namespace polymorphic {
 
 	template <typename T>
+	T* cudaAllocator<T>::allocate(std::size_t n) {
+		std::cout << "cudaAllocate(" << n << ") = ";
+		
+		blas::set_device(0);
+		T* ptr = blas::device_malloc<T>(n);
+		std::cout << ptr << std::endl;
+		std::cout << "done.\n";
+		return ptr;
+/*		if (n <= std::numeric_limits<std::size_t>::max() / sizeof(T)) {
+			void* ptr = nullptr;
+			cudaMalloc(&ptr, n * sizeof(T));
+			if (ptr) {
+				return static_cast<T*>(ptr);
+			}
+		}*/
+		throw std::bad_alloc();
+	}
+
+	template <typename T>
+	void cudaAllocator<T>::deallocate(T* ptr, std::size_t n) {
+		std::cout << "cudaFree.\n";
+		blas::device_free(ptr);
+		std::cout << "done.\n";
+		ptr = nullptr;
+	}
+
+	template <typename T>
 	cuMemory<T>::~cuMemory() {
 		cudaFree(data_);
 	}

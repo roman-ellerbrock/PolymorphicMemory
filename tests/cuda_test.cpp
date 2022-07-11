@@ -134,6 +134,9 @@ TEST_F(cuMemoryF, dgemm) {
 	EXPECT_NEAR(residual(hostC, hostC2), 0., deps);
 }
 
+TEST_F(cuMemoryF, cudaAllocator) {
+	vector<double, cudaAllocator<double>> myvec(100);
+}
 
 
 

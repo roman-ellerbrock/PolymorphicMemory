@@ -10,11 +10,30 @@
 
 namespace polymorphic {
 
+	template <typename T>
+	struct cudaAllocator {
+		using value_type = T;
+		
+		cudaAllocator() = default;
 
-//	template <>
-//	void transfer<cuMemory, Memory>(cuMemory& mem, const Memory& cumem);
+		template <class U>
+		cudaAllocator(const cudaAllocator<U>&) {}
+		
+		T* allocate(std::size_t n);
+
+		void deallocate(T* ptr, std::size_t n);
+	};
+
+	template <typename T, typename U>
+	inline bool operator == (const cudaAllocator<T>&, const cudaAllocator<U>&) {
+		return true;
+	}
+
+	template <typename T, typename U>
+	inline bool operator != (const cudaAllocator<T>& a, const cudaAllocator<U>& b) {
+		return !(a == b);
+	}
 	
-
 	template <typename T>
 	class cuMemory {
 	public:

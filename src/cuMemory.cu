@@ -12,6 +12,9 @@ namespace polymorphic {
 	using d = double;
 	using cd = complex<double>;
 
+	template class cudaAllocator<double>;
+	template class cudaAllocator<complex<double>>;
+
 	template class cuMemory<double>;
 	template class cuMemory<complex<double>>;
 }
