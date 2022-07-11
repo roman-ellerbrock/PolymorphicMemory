@@ -8,11 +8,25 @@
 #include <vector>
 
 namespace polymorphic {
+	template <typename T>
+	class cuMemory;
 
 	template <typename T>
-	using hostMemory = std::vector<T>;
+	class hostMemory : public std::vector<T> {
+	public:
+		hostMemory(size_t size) : vector<T>(size) {}
+
+		hostMemory(const cuMemory<T>& dev);
+		hostMemory& operator=(const cuMemory<T>& dev);
+	};
+
+	template <typename T>
+	hostMemory<T> arange(size_t size);
 
 	std::ostream& operator<<(std::ostream& os, hostMemory<double>& mem);
+
+	using memoryd = hostMemory<double>;
+	using memorycd = hostMemory<complex<double>>;
 
 }
 

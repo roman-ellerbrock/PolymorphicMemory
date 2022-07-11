@@ -2,14 +2,14 @@
 // Created by Roman Ellerbrock on 6/30/22.
 //
 
-#include "hostMemory.h"
+#include "hostMemory.hpp"
 #include <string.h>
 #include <ostream>
 
 namespace polymorphic {
 
-//	template class hostMemory<double>;
-//	template class hostMemory<complex<double>>;
+	template class hostMemory<double>;
+	template class hostMemory<complex<double>>;
 
 	std::ostream& operator<<(std::ostream& os, hostMemory<double>& mem) {
 		os << "mem.size() = " << mem.size() << std::endl;
@@ -19,5 +19,6 @@ namespace polymorphic {
 		return os;
 	}
 
+	template hostMemory<double> arange(size_t size);
 }
 

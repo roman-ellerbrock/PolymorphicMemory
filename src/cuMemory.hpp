@@ -6,19 +6,6 @@
 namespace polymorphic {
 
 	template <typename T>
-	void transferToDevice(cuMemory<T>& dev, const hostMemory<T>& host) {
-		size_t bytes = host.size()*sizeof(T);
-    		cudaMemcpy(dev.data(), host.data(), bytes, cudaMemcpyHostToDevice);
-	}
-
-	template <typename T>
-	void transferToHost(hostMemory<T>& host, const cuMemory<T>& dev) {
-		size_t bytes = host.size()*sizeof(T);
-    		cudaMemcpy(host.data(), dev.data(), bytes, cudaMemcpyDeviceToHost);
-	}
-
-
-	template <typename T>
 	cuMemory<T>::~cuMemory() {
 		cudaFree(data_);
 	}
@@ -66,5 +53,32 @@ namespace polymorphic {
 		return *this;
 	}
 
+	template <typename T>
+	void cuMemory<T>::transferToDevice(const hostMemory<T>& host) {
+		size_t bytes = host.size()*sizeof(T);
+    		cudaMemcpy(data(), host.data(), bytes, cudaMemcpyHostToDevice);
+	}
+
+	template <typename T>
+	void cuMemory<T>::transferToHost(hostMemory<T>& host) const {
+		size_t bytes = host.size()*sizeof(T);
+    		cudaMemcpy(host.data(), data(), bytes, cudaMemcpyDeviceToHost);
+	}
+
+	template <typename T>
+	cuMemory<T>::cuMemory(const hostMemory<T>& host) : cuMemory(host.size()) {
+		this->transferToDevice(host);
+	}
+
+	template <typename T>
+	cuMemory<T>& cuMemory<T>::operator=(const hostMemory<T>& host) {
+		if (size() == host.size()) {
+			this->transferToDevice(host);
+		} else {
+			cuMemory tmp(host);
+			std::swap(tmp, *this);
+		}
+		return *this;
+	}
 
 }

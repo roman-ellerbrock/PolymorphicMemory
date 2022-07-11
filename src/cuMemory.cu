@@ -14,12 +14,4 @@ namespace polymorphic {
 
 	template class cuMemory<double>;
 	template class cuMemory<complex<double>>;
-
-
-	template void transferToDevice(cuMemory<d>&, const hostMemory<d>&);
-	template void transferToDevice(cuMemory<cd>&, const hostMemory<cd>&);
-	template void transferToHost(hostMemory<d>&, const cuMemory<d>&);
-	template void transferToHost(hostMemory<cd>&, const cuMemory<cd>&);
-
-
 }
