@@ -15,13 +15,14 @@ enable_testing()
 
 add_executable(
 	memory_test
-#	memory_test.cpp
 	cuda_test.cpp
 )
 
 target_include_directories(
 	memory_test
 	PUBLIC
+	${BLAS_DIRECTORIES}
+	${CUDA_INCLUDE_DIRS}
 	${PROJECT_SOURCE_DIR}/src/
 )
 
@@ -30,10 +31,13 @@ target_link_libraries(
 	gtest_main
 	polymorphicMemory
 	-lblaspp
-	${CUDA_LIBRARIES} -lcublas -lcurand
+	${CUDA_LIBRARIES}
 )
 
+#target_link_options(polymorphicMemory PUBLIC ${CUDA_LIBRARIES})
+target_link_options(polymorphicMemory PUBLIC ${CUDA_FLAGS})
 
 include(GoogleTest)
 
 gtest_discover_tests(memory_test)
+

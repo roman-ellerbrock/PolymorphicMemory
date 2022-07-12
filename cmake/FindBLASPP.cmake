@@ -1,5 +1,5 @@
 
-execute_process(COMMAND git submodule update --init -- external/blaspp)
+#execute_process(COMMAND git submodule update --init -- external/blaspp)
 
 #execute_process(COMMAND cd ${CMAKE_SOURCE_DIR}/external/blaspp && mkdir -fp build)
 #execute_process(COMMAND cmake .. && make)
